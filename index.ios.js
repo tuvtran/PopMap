@@ -4,6 +4,7 @@
  */
 'use strict';
 import React, {
+  Alert,
   AppRegistry,
   Component,
   Image,
@@ -18,8 +19,8 @@ class AwesomeProject extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      origin: 'origin',
-      destination: 'destination',
+      origin: '',
+      destination: '',
     };
   }
 
@@ -32,6 +33,8 @@ class AwesomeProject extends Component {
           </Text>
           <TextInput
             onChangeText={(text) => this.setState({origin: text})}
+            onSubmitEditing={(text) => this.refs.DestinationInput.focus()}
+            returnKeyType={'next'}
             style={styles.textInput}
             value={this.state.origin}/>
           <TextInput />
@@ -41,13 +44,21 @@ class AwesomeProject extends Component {
             {'Destination'}
           </Text>
           <TextInput
+            ref='DestinationInput'
             onChangeText={(text) => this.setState({destination: text})}
+            onSubmitEditing={(_) => this.requestRoute()}
+            returnKeyType='go'
             style={styles.textInput}
             value={this.state.destination}/>
           <TextInput />
         </View>
       </View>
     );
+  }
+
+  requestRoute() {
+    console.log('origin: ' + this.state.origin);
+    console.log('destination: ' + this.state.destination);
   }
 }
 
