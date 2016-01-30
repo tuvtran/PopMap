@@ -1,27 +1,36 @@
 
 $(document).ready(function(){/* google maps -----------------------------------------------------*/
+var map, latlng, marker, mapOptions;
+
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function initialize() {
+  /* position Philly */
+  latlng = new google.maps.LatLng(39.9522, -75.1641);
 
-  /* position Amsterdam */
-  var latlng = new google.maps.LatLng(52.3731, 4.8922);
-
-  var mapOptions = {
+  mapOptions = {
     center: latlng,
     scrollWheel: false,
-    zoom: 13
+    zoom: 15,
+    mapTypeId:google.maps.MapTypeId.ROADMAP,
+    rotateControl:true
   };
-  
-  var marker = new google.maps.Marker({
+
+  marker = new google.maps.Marker({
     position: latlng,
     url: '/',
+    // So this is the effing animation for the marker
     animation: google.maps.Animation.DROP
   });
-  
-  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+
+  map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
   marker.setMap(map);
 
+  // Event handler for Google Map
+  google.maps.event.addListener(marker, 'click', function() {
+      map.setZoom(10);
+      map.setCenter(marker.getPosition());
+  });
 };
 /* end google maps -----------------------------------------------------*/
 });

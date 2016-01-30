@@ -17,6 +17,10 @@ body{
   	padding-top:50px; /*padding for navbar*/
 }
 
+body div div div h2 {
+    text-align: center;
+}
+
 .navbar-custom .icon-bar {
 	background-color:#fff;
 }
@@ -41,6 +45,10 @@ body{
 	box-shadow: inset 0 0 0;
 }
 
+.btn-default {
+    background-color: lightblue;
+}
+
 #main, #main>.row {
 	height:100%;
 }
@@ -54,7 +62,7 @@ body{
 }
 
 #map-canvas {
-	width:33.3333%;
+	width:48%;
     height:calc(100% - 0);
     position:absolute;
     right:16px;
