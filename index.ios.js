@@ -1,15 +1,13 @@
 /**
- * Sample React Native App
+ * Safe Route Client App
  * https://github.com/facebook/react-native
  */
 'use strict';
 import React, {
-  Alert,
   AppRegistry,
   Component,
   Image,
   MapView,
-  PropTypes,
   StyleSheet,
   Text,
   TextInput,
@@ -20,8 +18,8 @@ class RouteInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      origin: '',
-      destination: '',
+      from: '',
+      to: '',
     };
   }
 
@@ -29,31 +27,31 @@ class RouteInput extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.row}>
+          <Text>from:</Text>
           <TextInput
-            onChangeText={(text) => this.setState({origin: text})}
-            onSubmitEditing={(text) => this.refs.DestinationInput.focus()}
-            placeholder={'Origin'}
+            onChangeText={(text) => this.setState({from: text})}
+            onSubmitEditing={(text) => this.refs.toInput.focus()}
             returnKeyType={'next'}
             style={styles.textInput}
-            value={this.state.origin} />
+            value={this.state.from} />
         </View>
         <View style={styles.row}>
+          <Text>to:</Text>
           <TextInput
-            ref='DestinationInput'
-            onChangeText={(text) => this.setState({destination: text})}
+            ref='toInput'
+            onChangeText={(text) => this.setState({to: text})}
             onSubmitEditing={(_) => this.requestRoute()}
-            placeholder={'Destination'}
             returnKeyType='route'
             style={styles.textInput}
-            value={this.state.destination} />
+            value={this.state.to} />
         </View>
       </View>
     );
   }
 
   requestRoute() {
-    console.log('origin: ' + this.state.origin);
-    console.log('destination: ' + this.state.destination);
+    console.log('from: ' + this.state.from);
+    console.log('to: ' + this.state.to);
   }
 }
 
@@ -93,8 +91,10 @@ var styles = StyleSheet.create({
     borderColor: '#000000',
   },
   row: {
+    borderWidth: 0.5,
+    borderColor: '#aaaaaa',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    paddingLeft: 6,
   },
   container: {
     paddingTop: 100,
@@ -102,11 +102,8 @@ var styles = StyleSheet.create({
   textInput: {
     width: 250,
     height: 20,
-    borderWidth: 0.5,
-    borderColor: '#aaaaaa',
     fontSize: 13,
     padding: 4,
-    marginLeft: 10,
   },
 });
 
