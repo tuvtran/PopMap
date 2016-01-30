@@ -1,0 +1,3 @@
+rootProject.name = 'SafeRoute'
+
+include ':app'
