@@ -7,13 +7,14 @@
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-		{% load staticfiles %}
-
-		<link href="{% static 'map/css/bootstrap.min.css' %}" rel="stylesheet">
+		<link href="{{ url_for('.static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link href="{% static 'map/css/styles.css' %}" rel="stylesheet">
+		<link href="{{ url_for('.static', filename='css/styles.css') }}" rel="stylesheet">
+		<script type="text/javascript">
+        	var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    	</script>
 	</head>
 	<body>
 		<!-- begin template -->
@@ -44,8 +45,8 @@
 
 	<!-- script references -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-		<script src="{% static 'map/js/bootstrap.min.js' %}"></script>
-		<script src="{% static 'map/js/scripts.js' %}"></script>
+		<script src="{{ url_for('.static', filename='js/bootstrap.min.js') }}"></script>
+		<script src="{{ url_for('.static', filename='js/scripts.js') }}"></script>
 		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC5Hy3vuRKRJ3NXpw_-ynq-hFbgs2nhjGg&sensor=false&sensor=false&libraries=places"></script>
 	</body>
 </html>

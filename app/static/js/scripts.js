@@ -144,39 +144,16 @@ $(document).ready(function(){
         var url = "https://maps.googleapis.com/maps/api/directions/json?origin=place_id:" + origin
                     + "&destination=place_id:" + destination + "&key=" + API_KEY;
         var url2 = "https://maps.googleapis.com/maps/api/directions/json";
+        var params = {
+                origin: origin,
+                destination: destination,
+            }
 
         // alert("Value " + origin);
         // alert("Value " + destination);
 
-        $.get(url, function (data, status) {
+        $.getJSON($SCRIPT_ROOT + '_search1', params, function (data) {
             console.log(data);
-            console.log(status);
-        });
-
-        // $.ajax({
-        //     url: url2,
-        //     data: {
-        //         origin: "place_id:" + origin,
-        //         destination: "place_id" + destination,
-        //         key: API_KEY
-        //     },
-        //     type: 'GET',
-        //     crossDomain: true,
-        //     dataType: 'json',
-        //     headers: {
-        //         'Access-Control-Allow-Origin': '*'
-        //     },
-        //     success: function (data) {
-        //         console.log(data);
-        //     },
-        //     error: function (e) {
-        //         console.log(e);
-        //     },
-        //     beforeSend: setHeader
-        // });
-        //
-        // function setHeader(xhr) {
-        //     xhr.setRequestHeader('Access-Control-Allow-Origin', "*");
-        // }
+        })
     });
 });

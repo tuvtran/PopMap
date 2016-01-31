@@ -10,3 +10,10 @@ def index(request):
     }
 
     return render(request, 'map/index.html', context)
+
+def search(request, param):
+    context = {
+        "param": param
+    }
+
+    return HttpResponse(param)
