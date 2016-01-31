@@ -97,6 +97,25 @@ $(document).ready(function(){
             route(origin_place_id, destination_place_id, travel_mode,
                   directionsService, directionsDisplay);
             marker.setMap(null);
+
+            var origin = locations['origin'];
+            var destination = locations['destination'];
+            var API_KEY = "AIzaSyC5Hy3vuRKRJ3NXpw_-ynq-hFbgs2nhjGg";
+            var url = "https://maps.googleapis.com/maps/api/directions/json?origin=place_id:" + origin
+                        + "&destination=place_id:" + destination + "&key=" + API_KEY;
+            var url2 = "https://maps.googleapis.com/maps/api/directions/json";
+            var params = {
+                    origin: origin,
+                    destination: destination,
+                }
+
+            // alert("Value " + origin);
+            // alert("Value " + destination);
+
+            $.getJSON($SCRIPT_ROOT + '_search1', params, function (data) {
+                var jsonObj = data;
+                console.log(typeof jsonObj);
+            })
         });
 
         // Event handler for Google Map
@@ -137,23 +156,7 @@ $(document).ready(function(){
     }
     /* end google maps -----------------------------------------------------*/
 
-    $("button").click(function() {
-        var origin = locations['origin'];
-        var destination = locations['destination'];
-        var API_KEY = "AIzaSyC5Hy3vuRKRJ3NXpw_-ynq-hFbgs2nhjGg";
-        var url = "https://maps.googleapis.com/maps/api/directions/json?origin=place_id:" + origin
-                    + "&destination=place_id:" + destination + "&key=" + API_KEY;
-        var url2 = "https://maps.googleapis.com/maps/api/directions/json";
-        var params = {
-                origin: origin,
-                destination: destination,
-            }
-
-        // alert("Value " + origin);
-        // alert("Value " + destination);
-
-        $.getJSON($SCRIPT_ROOT + '_search1', params, function (data) {
-            console.log(data);
-        })
-    });
+    // $("button").click(function() {
+    //
+    // });
 });

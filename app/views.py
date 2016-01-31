@@ -1,5 +1,6 @@
 from flask import render_template, make_response, request, current_app, jsonify
 from app import app
+import route
 from placerequest import *
 
 @app.route('/')
@@ -14,7 +15,13 @@ def search1():
 	originGeo = PlaceDetails(origin)
 	destinationGeo = PlaceDetails(destination)
 
-	return jsonify(origin=origin, destination=destination)
+	restaurants = FindRestaurants(origin, destination)
+	waypoints = route.best_path(restaurants, originGeo, destinationGeo)
+	print 'waypoints: ' + str(waypoints)
+	directions = NewDir(origin, destination, waypoints)
+	print 'directions: ' + str(directions)
+
+	return jsonify(directions)
 
 @app.route('/_search2', methods=['GET'])
 def search2():

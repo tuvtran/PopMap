@@ -2,13 +2,9 @@ import urllib, json
 from kmeans import kmean
 
 AUTH_KEY = 'AIzaSyAG0fCOK8Qh9iODUjcK2TexVWVEBcw3MO4'
-class FindRestaurants():
 
-	def __init__(self, origin, destination, newDirection=None):
-		self.origin = origin
-		self.destination = destination
-		# get parameters to use Google Places
-		jsonData = FindDir(self)
+def FindRestaurants(origin, destination, newDirection=None):
+		jsonData = FindDir(origin, destination)
 		if (jsonData == "No Walking Path Found"):
 			print(jsonData)
 			return
@@ -31,19 +27,21 @@ class FindRestaurants():
 		waypoints_limit = 23
 		k = min(int(len(latlong)/3), waypoints_limit)
 		centroids, clusters = kmean(latlong, k)
-		centroidString = ""
-		for centroid in centroids:
-			centroidString += str(centroid)+"|"
-		self.newDirection = NewDir(self, centroidString)
+                return centroids
+
+		# centroidString = ""
+		# for centroid in centroids:
+			# centroidString += str(centroid)+"|"
+		# self.newDirection = NewDir(self.origin, self.destination, centroidString)
 
 
 # find the shortest path between two points
-def FindDir(self):
+def FindDir(origin, destination):
 		MyUrl = ('https://maps.googleapis.com/maps/api/directions/json'
 	           '?origin=place_id:%s'
 	           '&destination=place_id:%s'
 	           '&mode=walking'
-	           '&key=%s') % (self.origin, self.destination, AUTH_KEY)
+	           '&key=%s') % (origin, destination, AUTH_KEY)
 		#grabbing the JSON result
 	  	response = urllib.urlopen(MyUrl)
 	  	jsonRaw = response.read()
@@ -58,15 +56,12 @@ def FindDir(self):
 def decode(point_str):
     '''Decodes a polyline that has been encoded using Google's algorithm
     http://code.google.com/apis/maps/documentation/polylinealgorithm.html
-
     This is a generic method that returns a list of (latitude, longitude)
     tuples.
-
     :param point_str: Encoded polyline string.
     :type point_str: string
     :returns: List of 2-tuples where each tuple is (latitude, longitude)
     :rtype: list
-
     '''
 
     # sone coordinate offset is represented by 4 to 5 binary chunks
@@ -150,13 +145,14 @@ def PlaceDetails(placeid):
 	  	return jsonData["result"]["geometry"]["location"]["lat"], jsonData["result"]["geometry"]["location"]["lng"]
 
 # calculate new directions with waypoints
-def NewDir(self, centroidString):
+def NewDir(origin, destination, centroidString):
 	MyUrl = ('https://maps.googleapis.com/maps/api/directions/json'
 	           '?origin=place_id:%s'
-	           '&destination=place_id%s'
+	           '&destination=place_id:%s'
 	           '&mode=walking'
-	           '&waypoint=optimize:true|%s'
-	           '&key=%s') % (self.origin, self.destination, centroidString, AUTH_KEY)
+	           '&waypoints=optimize:true|%s'
+	           '&key=%s') % (origin, destination, centroidString, AUTH_KEY)
+	print MyUrl
 	#grabbing the JSON result
   	response = urllib.urlopen(MyUrl)
   	jsonRaw = response.read()
@@ -168,6 +164,6 @@ def NewDir(self, centroidString):
   	return jsonData
 
 
-print type(FindRestaurants('ChIJKcBHSE7GxokR8DA8BOQt8w4', 'ChIJjUMwJ1fGxokREkNf5LXR_Ak').newDirection)
+# print type(FindRestaurants('ChIJKcBHSE7GxokR8DA8BOQt8w4', 'ChIJjUMwJ1fGxokREkNf5LXR_Ak').newDirection)
 
-print PlaceDetails('ChIJKcBHSE7GxokR8DA8BOQt8w4')
+# print PlaceDetails('ChIJKcBHSE7GxokR8DA8BOQt8w4')
