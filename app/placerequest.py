@@ -123,7 +123,7 @@ def GoogPlac(lat,lng,radius):
 	           '?location=%s'
 	           '&radius=%s'
 	           '&types=restaurant'
-
+			   '&opennow=true'
 	           '&key=%s') % (LOCATION, RADIUS, AUTH_KEY)
 
 	  #grabbing the JSON result

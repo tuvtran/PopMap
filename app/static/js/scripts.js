@@ -10,6 +10,9 @@ $(document).ready(function(){
     function initialize() {
         // initializing some variables here
         // ***********
+        var jsonObj;
+        var routes = [];
+        var legs = [];
         var origin_place_id = null;
         var destination_place_id = null;
         var travel_mode = google.maps.TravelMode.WALKING;
@@ -94,8 +97,6 @@ $(document).ready(function(){
 
         // If the search button is clicked
         buttonSearch.addEventListener('click', function() {
-            route(origin_place_id, destination_place_id, travel_mode,
-                  directionsService, directionsDisplay);
             marker.setMap(null);
 
             var origin = locations['origin'];
@@ -113,8 +114,36 @@ $(document).ready(function(){
             // alert("Value " + destination);
 
             $.getJSON($SCRIPT_ROOT + '_search1', params, function (data) {
-                var jsonObj = data;
-                console.log(typeof jsonObj);
+                jsonObj = data;
+                var waypoints =[];
+
+                service = new google.maps.places.PlacesService(map);
+                // service.getDetails(request, callback);
+
+                    for (var i = 0; i < jsonObj['geocoded_waypoints'].length; i++) {
+                        console.log(jsonObj['geocoded_waypoints'][i]['place_id']);
+                        service.getDetails({
+                            placeId: jsonObj['geocoded_waypoints'][i]['place_id']
+                        }, function(place, status) {
+                            console.log(status);
+                            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                                waypoints.push({
+                                    location: {
+                                        lat: place.geometry.location.lat(),
+                                        lng: place.geometry.location.lng()
+                                    },
+                                    stopover: false
+                                });
+
+                                route(origin, destination, travel_mode,
+                                      directionsService, directionsDisplay, waypoints);
+                            }
+                        });
+
+                        if (i == jsonObj['geocoded_waypoints'].length - 1) {
+                            console.log("Done");
+                        }
+                    }
             })
         });
 
@@ -137,15 +166,33 @@ $(document).ready(function(){
         }
 
         function route(origin_place_id, destination_place_id, travel_mode,
-                 directionsService, directionsDisplay) {
-            if (!origin_place_id || !destination_place_id) {
+                 directionsService, directionsDisplay, waypoints) {
+            if (!origin_place_id || !destination_place_id || waypoints.length < jsonObj['geocoded_waypoints'].length) {
                 return;
             }
-            directionsService.route({
-                origin: {'placeId': origin_place_id},
-                destination: {'placeId': destination_place_id},
-                travelMode: travel_mode
-            }, function(response, status) {
+
+            // for (var i = 0; i < waypoints.length; i++) {
+            //     console.log(waypoints[i]);
+            // }
+
+            if (waypoints) {
+                request = {
+                    origin: {'placeId': origin_place_id},
+                    destination: {'placeId': destination_place_id},
+                    waypoints: waypoints,
+                    optimizeWaypoints: true,
+                    travelMode: travel_mode
+                }
+            } else {
+                request = {
+                    origin: {'placeId': origin_place_id},
+                    destination: {'placeId': destination_place_id},
+                    travelMode: travel_mode
+                }
+            }
+
+            directionsService.route(request, function(response, status) {
+                    console.log(waypoints);
                     if (status === google.maps.DirectionsStatus.OK) {
                         directionsDisplay.setDirections(response);
                     } else {
