@@ -19,9 +19,9 @@ Run the app
 $ python run.py
 ```
 
-The web app can now be accessed at http://localhost:5000
+The web app can now be accessed at [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 ## Work in progess:
 * Code refactorization
-* Performance optimizing
+* Performance optimization
 * UI tweaks
