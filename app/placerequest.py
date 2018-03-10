@@ -1,7 +1,8 @@
 import urllib, json
+import os
 from kmeans import kmean
 
-AUTH_KEY = 'AIzaSyAG0fCOK8Qh9iODUjcK2TexVWVEBcw3MO4'
+AUTH_KEY = os.getenv('AUTH_KEY')
 
 def FindRestaurants(origin, destination, newDirection=None):
 		jsonData = FindDir(origin, destination)
@@ -162,8 +163,3 @@ def NewDir(origin, destination, centroidString):
   	if (status == no_results):
   		return ("No Walking Path Found")
   	return jsonData
-
-
-# print type(FindRestaurants('ChIJKcBHSE7GxokR8DA8BOQt8w4', 'ChIJjUMwJ1fGxokREkNf5LXR_Ak').newDirection)
-
-# print PlaceDetails('ChIJKcBHSE7GxokR8DA8BOQt8w4')
